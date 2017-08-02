@@ -1,0 +1,28 @@
+# Don't use any predefined language environment
+# (see https://github.com/travis-ci/travis-ci/issues/4895#issuecomment-150703192)
+language: generic
+
+sudo: required
+
+services:
+    - docker
+
+# Disable automatic submodule fetching to prevent
+# it from being done recursively
+git:
+    submodules: false
+
+# Do a shallow submodule fetch
+before_install: git submodule update --init
+
+env:
+    global:
+        # Make sure beaver is in the PATH
+        - PATH="$(git config -f .gitmodules submodule.beaver.path)/bin:$PATH)"
+    matrix:
+        - DIST=xenial F=production
+        - DIST=xenial F=devel
+
+install: beaver install
+
+script: beaver make test all
