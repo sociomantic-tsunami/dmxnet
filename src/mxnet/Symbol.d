@@ -720,7 +720,36 @@ public enum SoftmaxOutputNormalization
 
 /*******************************************************************************
 
-    A symbol representing softmax (and cross entropy loss)
+    A symbol representing softmax (and cross entropy loss for calculating
+    objective and gradient information)
+
+    This symbol represents the application of the softmax function to the
+    input. For a backward pass the cross entropy is calculated using the label
+    as reference for obtaining objective and gradient information.
+
+    A label is either already a probability vector or treated internally as
+    such by one-hot encoding.
+
+    An input is transformed to a probability vector by the softmax function
+    which is defined as `softmax(x) = exp(x) / sum(exp(x))`. The softmax
+    function is a generalization of the logistic function allowing for more
+    than two classes.
+
+    The cross entropy measures the similarity of two probability distributions
+    over the same set of events. It is calculated between two probability
+    vectors as `-y' * log(softmax(x))` where `'` denotes transposition. It is
+    used as an objective function in this symbol.
+
+    In case you have more than one label-input pair, this function sums the
+    cross entropy losses over all pairs, formally
+    `-sum(y_i' * log(softmax(x_i)))` where the summation runs over the index
+    `i` and all vectors `y_i` and `x_i` have the same length, that is, the
+    number of label classes.
+
+    For prediction purposes (i.e., on a forward pass) only the softmax is
+    calculated, turning the input into a probability vector. In training (i.e.,
+    a forward pass with objective followed by a backward pass) the cross
+    entropy is used for calculating objective and gradient information.
 
     An SoftmaxOutput allocates MXNet resources accessed through an
     `MXNetHandle`. Its resources should be freed by calling `freeHandle` when
@@ -736,14 +765,11 @@ public class SoftmaxOutput : Symbol
 {
     /***************************************************************************
 
-        Constructs a symbol representing the result of performing the softmax
-        on `input` and `label`.
-
-        The softmax function is defined as `exp(input_label) / sum(exp(input))`.
+        Constructs `SoftmaxOutput` symbol
 
         Params:
             input = input symbol to apply softmax to
-            label = label symbol to apply softmax to
+            label = ground truth to compare against the output of softmax
             normalization = normalization applied to the gradient; defaults to
                             batch
             grad_scale = scale factor for scaling the gradient; defaults to 1
