@@ -16,4 +16,5 @@ apt-get update
 
 # Install dmxnet dependencies
 apt-get install -y \
-    libmxnet
+    libmxnet \
+    zlib1g-dev

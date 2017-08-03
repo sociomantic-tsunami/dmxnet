@@ -7,6 +7,10 @@ sudo: required
 services:
     - docker
 
+cache:
+    directories:
+        - $HOME/.cache/mnist/
+
 # Disable automatic submodule fetching to prevent
 # it from being done recursively
 git:
@@ -26,6 +30,8 @@ env:
         - DC=dmd-transitional DIST=xenial F=production
         - DC=dmd-transitional DIST=xenial F=devel
 
-install: beaver install
+install:
+    - beaver install
+    - beaver run script/download-mnist
 
 script: beaver run ci/run.sh

@@ -15,3 +15,7 @@ endif
 .PHONY: download-mnist
 download-mnist: $C/script/download-mnist
 	$(call exec,sh $(if $V,,-x) $^,$(MNIST_DATA_DIR),$^)
+
+$O/test-mxnet.stamp: override LDFLAGS += -lz
+$O/test-mxnet.stamp: override ITFLAGS += $(MNIST_DATA_DIR)
+$O/test-mxnet.stamp: download-mnist
