@@ -11,3 +11,7 @@ endif
 # use NaiveEngine (non-threaded) MXNet engine since the default (threaded)
 # version dead locks
 %test: export MXNET_ENGINE_TYPE=NaiveEngine
+
+.PHONY: download-mnist
+download-mnist: $C/script/download-mnist
+	$(call exec,sh $(if $V,,-x) $^,$(MNIST_DATA_DIR),$^)
