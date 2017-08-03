@@ -932,3 +932,102 @@ public class LinearRegressionOutput : Symbol
         test!("!is")(lr.handle(), null);
     }
 }
+
+
+/*******************************************************************************
+
+    Dot symbol representing a generalized dot product
+
+    A sum is performed over the last dimension of the first operand and the
+    first dimension of the second operand. These dimensions have to be of same
+    length as they are collapsed by summing over the pair-wise products. The
+    result is an n-dimensional array whose shape is the shape of the input
+    n-dimensional arrays concatenated excluding the two dimensions used when
+    summing.
+
+    This generalized dot product recovers the (vector) dot product and also the
+    matrix matrix product as special cases.
+
+    For example, for two vectors `x` and `y` of same length we sum over the
+    products `x[i] * y[i]`. For each vector there is only one dimension, hence
+    we end up with a 0-dimensional array, i.e., a scalar. For two matrices `A`
+    of shape `[m,n]` and `B` of shape `[n,o]` we sum over the inner dimensions
+    of `A` and `B` (which again have to have same length, here, `n`). The
+    result is a matrix of shape `[m,o]`.
+
+    More formally given two n-dimensional arrays `x` and `y`. The length of
+    the last dimension of `x` must match the length of the first dimension of
+    `y` (`x.shape[$ - 1] == y.shape[0]`) as a requirement since values along
+    these dimensions are multiplied and summed. The resulting n-dimensional
+    array has shape `x.shape[0 .. $ - 1] ~ y.shape[1 .. $]`. The inner
+    dimensions are collapsed. The element at `[i_1, ..., i_m, j_1, ..., j_m]`
+    of the result is calculated by summing over the products
+
+        `x[i_1, ..., i_m, k] * y[k, j_1, ..., j_n]`
+
+    for `k` in `[0, ..., y.shape[0] - 1]`.
+
+*******************************************************************************/
+
+public class Dot : Symbol
+{
+    /***************************************************************************
+
+        Constructs a `Dot` symbol
+
+        Params:
+            x = symbol whose last dimension's length must match `y` first
+                dimension's length
+            y = symbol whose first dimension's length must match the length of
+                the last dimension of `x`
+            transpose_x = transpose `x` (reversing its shape) prior to
+                          performing the dot; defaults to false
+            transpose_y = transpose `y` (reversing its shape) prior to
+                          performing the dot; defaults to false
+
+    ***************************************************************************/
+
+    public this (Symbol x,
+                 Symbol y,
+                 bool transpose_x = false,
+                 bool transpose_y = false)
+    in
+    {
+        assert(x !is null);
+        assert(y !is null);
+    }
+    body
+    {
+        istring[2] keys;
+        keys[0] = "transpose_a";
+        keys[1] = "transpose_b";
+
+        Immut!(char)*[2] c_keys;
+        c_keys[0] = keys[0].ptr;
+        c_keys[1] = keys[1].ptr;
+
+        Immut!(char)*[2] c_values;
+        const istring[] true_and_false = ["false", "true"];
+        c_values[0] = true_and_false[transpose_x].ptr;
+        c_values[1] = true_and_false[transpose_y].ptr;
+
+        super("dot", c_keys, c_values);
+
+        SymbolHandle[2] args;
+        args[0] = x.handle();
+        args[1] = y.handle();
+
+        this.compose(args, null);
+    }
+
+    unittest
+    {
+        scope x = new Variable("x");
+        scope (exit) x.freeHandle();
+        scope y = new Variable("y");
+        scope (exit) y.freeHandle();
+        scope dot = new Dot(x, y);
+        scope (exit) dot.freeHandle();
+        test!("!is")(dot.handle(), null);
+    }
+}
