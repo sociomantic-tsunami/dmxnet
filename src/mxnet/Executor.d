@@ -334,6 +334,7 @@ public class Executor (T)
         scope vector_b = new Variable("b");
         scope (exit) vector_b.freeHandle();
         scope model = new LinearRegressionOutput(fc, vector_b);
+        scope(exit) model.freeHandle();
 
         auto context = cpuContext();
 

@@ -505,6 +505,7 @@ public class Variable : Symbol
     unittest
     {
         scope v = new Variable("test");
+        scope(exit) v.freeHandle();
         test!("==")(v.name(), "test");
     }
 }

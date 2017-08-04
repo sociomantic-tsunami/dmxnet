@@ -247,6 +247,7 @@ public class MXNetHandle (HandleType, alias FreeHandleFunction)
 
         int* h = cast(int*) malloc(int.sizeof);
         scope valid_handle = new MXNetHandle!(int*, freeMXNetHandleMemory)(h);
+        scope(exit) valid_handle.freeHandle();
         testThrown!(MXNetAPIException)(valid_handle.apply!(mxNetHandleFails)());
 
         valid_handle.apply!(mxNetHandleSucceeds)(6);
@@ -358,6 +359,7 @@ public class MXNetHandle (HandleType, alias FreeHandleFunction)
         {
             HandleType some_handle = malloc(1);
             scope h = new Memory(some_handle);
+            scope(exit) h.freeHandle();
             test(h.handle !is null);
             h.handle = some_handle;
             test(h.handle is some_handle);
