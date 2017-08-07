@@ -726,16 +726,12 @@ public class NDArray (T)
 
         Multiplies each element of this n-dimensional array by a value
 
-        `rhs` is broadcast if necessary to match the shape of this
-        n-dimensional array. All dimensions of the right hand side not equal to
-        one must match the corresponding dimension of this n-dimensional array.
-
-        For an explanation of broadcasting see `elementWiseBroadcast`.
+        Each element of this n-dimensional array is multiplied by the passed
+        scalar and updated to this result.
 
         Params:
-            rhs = the n-dimensional array to be multiplied element wise;
-                  all dimensions not equal to 1 must match the corresponding
-                  dimension of this n-dimensional array
+            rhs = scalar to be multiplied with each element of this
+                  n-dimensional array
 
         Returns:
             this n-dimensional array after the element wise multiplications
