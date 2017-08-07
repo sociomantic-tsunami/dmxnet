@@ -647,7 +647,7 @@ public class NDArray (T)
         n-dimensional array. All dimensions of the right hand side not equal to
         one must match the corresponding dimension of this n-dimensional array.
 
-        For an explanation of broadcasting see `elementWiseBroadcast`.
+        For an explanation of broadcasting see `applyBroadcastOp`.
 
         Params:
             rhs = the n-dimensional array to be subtracted;
