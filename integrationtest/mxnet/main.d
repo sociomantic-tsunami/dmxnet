@@ -11,9 +11,9 @@
 
 *******************************************************************************/
 
-module test.mxnet.main;
+module integrationtest.mxnet.main;
 
-import MNIST = test.mxnet.MNIST;
+import MNIST = integrationtest.mxnet.MNIST;
 
 import mxnet.MXNet;
 

@@ -22,7 +22,7 @@
 
 *******************************************************************************/
 
-module test.mxnet.MNIST;
+module integrationtest.mxnet.MNIST;
 
 import core.stdc.string;
 import core.sys.posix.arpa.inet;
