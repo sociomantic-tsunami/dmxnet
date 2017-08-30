@@ -23,3 +23,5 @@ $O/test-mxnet: override DFLAGS += -debug=MXNetHandleManualFree
 # extra runtime dependencies for integration tests
 $O/test-mxnet.stamp: override ITFLAGS += $(MNIST_DATA_DIR)
 $O/test-mxnet.stamp: download-mnist
+
+$O/%unittests: override LDFLAGS += -lz
