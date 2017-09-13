@@ -454,6 +454,39 @@ public class MXNetHandle (HandleType, alias FreeHandleFunction)
 }
 
 
+/******************************************************************************
+
+    Writes a formatted string to standard error
+
+    The function itself does not allocate. But the string conversion method
+    `toString` for arguments of user-defined type might. As such these
+    allocations depend on the implementation of `toString`. In summary the
+    execution of this function performs no allocation (including GC
+    allocations) unless an argument cannot be formatted without.
+
+    As such the function is designed for outputting debug messages in
+    circumstances where GC allocations and throwing is not permitted. Most
+    notably this includes the execution of destructors.
+
+    Params:
+        fmt = format string to use
+        args = variadic arguments to format according to fmt
+
+*******************************************************************************/
+
+private void debugReport (Args...) (cstring fmt, Args args)
+{
+    sformat((cstring str) { write(STDERR_FILENO, str.ptr, str.length); },
+            fmt, args);
+}
+
+unittest
+{
+    testNoAlloc(debugReport("Debug reporting works: {} at {}:{}\n",
+                            true, __FILE__, __LINE__));
+}
+
+
 version (UnitTest)
 {
     /***************************************************************************
