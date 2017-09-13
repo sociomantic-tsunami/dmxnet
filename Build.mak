@@ -16,7 +16,10 @@ endif
 download-mnist: $C/script/download-mnist
 	$(call exec,sh $(if $V,,-x) $^,$(MNIST_DATA_DIR),$^)
 
-$O/test-mxnet.stamp: override LDFLAGS += -lz
+# extra build dependencies for integration tests
+$O/test-mxnet: override LDFLAGS += -lz
+$O/test-mxnet: override DFLAGS += -debug=MXNetHandleManualFree
+
+# extra runtime dependencies for integration tests
 $O/test-mxnet.stamp: override ITFLAGS += $(MNIST_DATA_DIR)
-$O/test-mxnet.stamp: override DFLAGS += -debug=MXNetHandleManualFree
 $O/test-mxnet.stamp: download-mnist
