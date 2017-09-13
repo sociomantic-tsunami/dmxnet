@@ -98,10 +98,8 @@ static ~this ()
 {
     if (mxnet_handle_count != 0)
     {
-        char[60] buf; // should be enough for message + any `long` value
-        auto msg = snformat(buf, "{} MXNet handle(s) in use at shutdown!\n",
-                            mxnet_handle_count);
-        write(STDERR_FILENO, msg.ptr, msg.length);
+        debugReport("{} MXNet handle(s) in use at shutdown!\n",
+                    mxnet_handle_count);
     }
 }
 
@@ -322,9 +320,9 @@ public class MXNetHandle (HandleType, alias FreeHandleFunction)
         {
             debug (MXNetHandle)
             {
-                Stderr.formatln("Attempting to overwrite handle {} with itself "
-                                    ~ "at {}:{}",
-                                this.c_api_handle, file, line);
+                debugReport("Attempting to overwrite handle {:x} with itself "
+                                    ~ "at {}:{}\n",
+                            this.c_api_handle, file, line);
             }
             return;
         }
@@ -338,8 +336,8 @@ public class MXNetHandle (HandleType, alias FreeHandleFunction)
             ++mxnet_handle_count;
             debug (MXNetHandle)
             {
-                Stderr.formatln("New handle: {} ({} allocated in total)",
-                                this.c_api_handle, handleCount());
+                debugReport("New handle: {:x} ({} allocated in total)\n",
+                            this.c_api_handle, handleCount());
             }
         }
     }
@@ -382,39 +380,21 @@ public class MXNetHandle (HandleType, alias FreeHandleFunction)
             --mxnet_handle_count;
             debug (MXNetHandle)
             {
-                // using fixed stack buffer, `snformat` and `write` should
-                // avoid allocation, which (whether GC or not) might cause
-                // problems if this method is called from a destructor
-                char[80] buf; // enough space for message, `hash_t` and `long`
-                auto free_handle_msg =
-                    snformat(buf, "Freeing handle: {:x} ({} still allocated)\n",
-                             this.c_api_handle, handleCount());
-                write(STDERR_FILENO,
-                      free_handle_msg.ptr, free_handle_msg.length);
+                debugReport("Freeing handle: {:x} ({} still allocated)\n",
+                            this.c_api_handle, handleCount());
             }
 
             if (handleCount() < 0)
             {
-                // we cannot throw (even an Error) from here, since this
-                // method may be called by the destructor, so we use the
-                // C stdlib to output an error message before aborting
-                const istring negative_handles_msg =
-                    "Allocated handle count is negative!\n";
-                write(STDERR_FILENO,
-                      negative_handles_msg.ptr, negative_handles_msg.length);
+                debugReport("Allocated handle count is negative!\n");
                 abort();
             }
         }
 
         if (FreeHandleFunction(this.c_api_handle) != 0)
         {
-            // we cannot throw (even an Error) from here, since this
-            // method may be called by the destructor, so we use C
-            // stdlib to output an error message before aborting
-            const istring msg = "Could not free MXNet handle using " ~
-                                identifier!(FreeHandleFunction) ~ "@" ~
-                                __FILE__ ~ ":" ~ __LINE__.stringof ~ "\n";
-            write(STDERR_FILENO, msg.ptr, msg.length);
+            debugReport("Could not free MXNet handle using {}@{}:{}\n",
+                        identifier!(FreeHandleFunction), __FILE__, __LINE__);
             abort();
         }
 
@@ -444,9 +424,8 @@ public class MXNetHandle (HandleType, alias FreeHandleFunction)
                 // have been freed by the time the destructor is initiated.
                 // This debug check should help in tracking down any handles
                 // for which this has not been done.
-                sformat((cstring str) { write(STDERR_FILENO, str.ptr, str.length); },
-                        "Non-null handle {:x} in MXNetHandle destructor!\n",
-                        this.c_api_handle);
+                debugReport("Non-null handle {:x} in MXNetHandle destructor!\n",
+                            this.c_api_handle);
             }
         }
         this.freeHandle();
