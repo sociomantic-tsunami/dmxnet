@@ -138,7 +138,7 @@ void main (istring[] args)
         gradient_w *= step_length;
         matrix_w -= gradient_w;
     }
-    auto iteration_time_sec = watch.stop();
+    auto iteration_time_sec = watch.sec();
 
     auto predicted_testing_labels = predict(softmax, matrix_w, testing_size, mnist_testing_images);
     auto testing_accuracy = accuracy(predicted_testing_labels, mnist_testing_labels);
