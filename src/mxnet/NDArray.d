@@ -1484,11 +1484,11 @@ unittest
 
                 if (rhs == op_identity)
                 {
-                    test!("==")(ret.data(), lhs_data);
+                    test!("==")(ret_in_place.data(), lhs_data);
                 }
                 else
                 {
-                    test!("!=")(ret.data(), lhs_data);
+                    test!("!=")(ret_in_place.data(), lhs_data);
                 }
             }
         }
