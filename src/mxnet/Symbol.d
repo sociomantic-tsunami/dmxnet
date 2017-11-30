@@ -810,7 +810,7 @@ public class SoftmaxOutput : Symbol
         cstring ignore_label_str = toNoLossString(ignore_label, buf_ignore_label);
         buf_ignore_label[ignore_label_str.length] = '\0';
 
-        istring multi_output_str = use_ignore ? "true" : "false";
+        istring multi_output_str = multi_output ? "true" : "false";
 
         istring preserve_shape_str = preserve_shape ? "true" : "false";
 
