@@ -59,7 +59,7 @@ Conversion to D2
 
 By default all ``dmxnet`` development is done in D1, but using a subset that is
 almost D2 compatible, and can be auto-converted to D2 using `d1to2fix
-<https://github.com/sociomantic-tsunami/d1to2fix>_`.  If you are using ``Makd``
+<https://github.com/sociomantic-tsunami/d1to2fix>`_.  If you are using ``Makd``
 there is a handy built-in target you can use::
 
   make d2conv
