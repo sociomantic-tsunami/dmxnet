@@ -40,7 +40,7 @@ Submodules
 ========== =======
 Dependency Version
 ========== =======
-makd       v2.0.x
+makd       v2.1.x
 ocean      v3.5.x
 ========== =======
 
