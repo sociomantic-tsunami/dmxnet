@@ -763,6 +763,109 @@ public enum SoftmaxOutputNormalization
 
 public class SoftmaxOutput : Symbol
 {
+    import ocean.core.Traits;
+
+    /***************************************************************************
+
+        Struct containing configuration options for the `SoftmaxOutput`
+        symbol
+
+        By default, all values will match the defaults used by the upstream
+        MXNet library.  This struct only needs to be used directly if one or
+        more of these parameters is to be set to a non-default value.
+
+    ***************************************************************************/
+
+    public struct Config
+    {
+        /***********************************************************************
+
+            Scale factor for scaling the gradient
+
+        ***********************************************************************/
+
+        public float grad_scale = 1;
+
+        /***********************************************************************
+
+            Label to ignore during the backward pass, if `use_ignore` is `true`
+
+        ***********************************************************************/
+
+        public float ignore_label = -1;
+
+        /***********************************************************************
+
+            If `true`, the softmax function will be computed along the second
+            axis, i.e. `axis == 1`
+
+        ***********************************************************************/
+
+        public bool multi_output = false;
+
+        /***********************************************************************
+
+            If `true`, the `ignore_label` field can be used to specify a label
+            to ignore during the backward pass
+
+        ***********************************************************************/
+
+        public bool use_ignore = false;
+
+        /***********************************************************************
+
+            If `true`, the softmax function will be computed along the last
+            axis, i.e. `axis == -1`
+
+        ***********************************************************************/
+
+        public bool preserve_shape = false;
+
+        /***********************************************************************
+
+            Normalization applied to the gradient
+
+        ***********************************************************************/
+
+        public SoftmaxOutputNormalization normalization =
+            SoftmaxOutputNormalization.batch;
+
+        /***********************************************************************
+
+            If `true`, the gradient will be multiplied elementwise by the
+            output gradient
+
+        ***********************************************************************/
+
+        public bool out_grad = false;
+    }
+
+    ///
+    unittest
+    {
+        // initialize a `Config` struct instance with only a couple of
+        // non-default values
+        Config config = {
+            ignore_label: 1,
+            use_ignore: true
+        };
+
+        // check values of custom fields
+        assert(config.ignore_label == 1.0f);
+        assert(config.ignore_label != Config.init.ignore_label);
+
+        assert(config.use_ignore);
+        assert(config.use_ignore != Config.init.use_ignore);
+
+        // check values of non-customized fields
+        assert(config.grad_scale == Config.init.grad_scale);
+        assert(config.multi_output == Config.init.multi_output);
+        assert(config.preserve_shape == Config.init.preserve_shape);
+        assert(config.normalization == Config.init.normalization);
+        assert(config.out_grad == Config.init.out_grad);
+    }
+
+
     /***************************************************************************
 
         Constructs `SoftmaxOutput` symbol
@@ -770,29 +873,15 @@ public class SoftmaxOutput : Symbol
         Params:
             input = input symbol to apply softmax to
             label = ground truth to compare against the output of softmax
-            normalization = normalization applied to the gradient; defaults to
-                            batch
-            grad_scale = scale factor for scaling the gradient; defaults to 1
-            use_ignore = use ignore_label; defaults to false
-            ignore_label = all labels with this label will be ignored during the
-                           backward pass; defaults to -1
-            multi_output = softmax applied to axis 1, if set to true; defaults
-                           to false
-            preserve_shape = softmax will applied on the last axis, if true;
-                             defaults to false
-            out_grad = apply weighting to output gradient
+            config = optional instance of Config struct containing extra
+                     configuration parameters (if not specified, all will
+                     be set to their default values)
 
     ***************************************************************************/
 
     public this (Symbol input,
                  Symbol label,
-                 SoftmaxOutputNormalization normalization = SoftmaxOutputNormalization.batch,
-                 float grad_scale = 1,
-                 bool use_ignore = false,
-                 float ignore_label = -1,
-                 bool multi_output = false,
-                 bool preserve_shape = false,
-                 bool out_grad = false)
+                 Config config = Config.init)
     in
     {
         assert(input !is null);
@@ -800,44 +889,45 @@ public class SoftmaxOutput : Symbol
     }
     body
     {
-        char[16] buf_grad_scale = void;
-        cstring grad_scale_str = toNoLossString(grad_scale, buf_grad_scale);
-        buf_grad_scale[grad_scale_str.length] = '\0';
-
-        istring use_ignore_str = use_ignore ? "true" : "false";
-
-        char[16] buf_ignore_label = void;
-        cstring ignore_label_str = toNoLossString(ignore_label, buf_ignore_label);
-        buf_ignore_label[ignore_label_str.length] = '\0';
-
-        istring multi_output_str = multi_output ? "true" : "false";
-
-        istring preserve_shape_str = preserve_shape ? "true" : "false";
-
-        istring out_grad_str = out_grad ? "true" : "false";
-
-        istring[7] keys;
-        keys[0] = "grad_scale";
-        keys[1] = "ignore_label";
-        keys[2] = "multi_output";
-        keys[3] = "use_ignore";
-        keys[4] = "preserve_shape";
-        keys[5] = "normalization";
-        keys[6] = "out_grad";
-
-        Immut!(char)*[7] c_keys;
-        foreach (i, ref key; keys) c_keys[i] = key.ptr;
-
         const istring[] softmax_normalizations = ["batch", "null", "valid"];
 
-        Const!(char)*[7] c_values;
-        c_values[0] = grad_scale_str.ptr;
-        c_values[1] = ignore_label_str.ptr;
-        c_values[2] = multi_output_str.ptr;
-        c_values[3] = use_ignore_str.ptr;
-        c_values[4] = preserve_shape_str.ptr;
-        c_values[5] = softmax_normalizations[normalization].ptr;
-        c_values[6] = out_grad_str.ptr;
+        alias typeof(Config.tupleof) ConfigTuple;
+
+        istring[ConfigTuple.length] keys;
+        Const!(char)*[ConfigTuple.length] c_keys;
+        Const!(char)*[ConfigTuple.length] c_values;
+
+        foreach (i, T; ConfigTuple)
+        {
+            keys[i] = FieldName!(i, Config);
+            c_keys[i] = keys[i].ptr;
+
+            auto field_value = config.tupleof[i];
+
+            static if (isFloatingPointType!(T))
+            {
+                char[16] float_buf = void;
+                cstring float_string = toNoLossString(field_value, float_buf);
+                float_buf[float_string.length] = '\0';
+                c_values[i] = float_string.ptr;
+
+            }
+            else static if (is(T == bool))
+            {
+                istring bool_string = field_value ? "true" : "false";
+                c_values[i] = bool_string.ptr;
+            }
+            else static if (is(T == SoftmaxOutputNormalization))
+            {
+                istring norm_string = softmax_normalizations[field_value];
+                c_values[i] = norm_string.ptr;
+            }
+            else
+            {
+                static assert("Unsupported SoftmaxOutput config type "
+                              ~ T.stringof);
+            }
+        }
 
         super("SoftmaxOutput", c_keys, c_values);
 
@@ -859,6 +949,29 @@ public class SoftmaxOutput : Symbol
         test!("!is")(s.handle(), null);
     }
 }
+
+///
+unittest
+{
+    // set up input and label variables
+    scope input = new Variable("x");
+    scope (exit) input.freeHandle();
+    scope label = new Variable("y");
+    scope (exit) label.freeHandle();
+
+    // create SoftmaxOutput symbol using default configuration
+    scope softmax_default = new SoftmaxOutput(input, label);
+    scope (exit) softmax_default.freeHandle();
+
+    // create SoftmaxOutput symbol with custom configuration
+    SoftmaxOutput.Config config = {
+        grad_scale: 1.5,
+        preserve_shape: true
+    };
+    scope softmax_custom = new SoftmaxOutput(input, label, config);
+    scope (exit) softmax_custom.freeHandle();
+}
+
 
 /*******************************************************************************
 
