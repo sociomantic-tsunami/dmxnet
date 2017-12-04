@@ -270,11 +270,11 @@ public class Executor (T)
         scope output = new NDArray!(float)(null);
         scope (exit) output.freeHandle();
         scope outputs = [output];
+        // output is A*w'
+        executor.outputs(outputs);
 
         // update outputs only (gradients are updated only in backward pass)
         executor.forward(ForwardPass.outputs);
-        // output is A*w'
-        executor.outputs(outputs);
         test!("==")(output.data(), [input.data[0] * weights.data[0] +
                                     input.data[1] * weights.data[1]]);
 
@@ -282,14 +282,12 @@ public class Executor (T)
         input.data[] = [3, 4];
         label.data[] = [3];
         executor.forward(ForwardPass.outputs);
-        executor.outputs(outputs);
         test!("==")(output.data(), [input.data[0] * weights.data[0] +
                                     input.data[1] * weights.data[1]]);
 
         // test with different weights
         weights.data[] = [3, 4];
         executor.forward(ForwardPass.outputs);
-        executor.outputs(outputs);
         test!("==")(output.data(), [input.data[0] * weights.data[0] +
                                     input.data[1] * weights.data[1]]);
     }
@@ -364,10 +362,10 @@ public class Executor (T)
         scope output = new NDArray!(float)(null);
         scope (exit) output.freeHandle();
         scope outputs = [output];
+        executor.outputs(outputs);
 
         // update outputs and gradients
         executor.forward();
-        executor.outputs(outputs);
         executor.backward();
         // gradient w.r.t. to w is (A*w'-b) * A
         test!("==")(gradient_weights.data(), [(output.data[0] - label.data[0]) * input.data[0],
@@ -377,7 +375,6 @@ public class Executor (T)
         input.data[] = [3, 4];
         label.data[] = [3];
         executor.forward();
-        executor.outputs(outputs);
         executor.backward();
         // gradient w.r.t. to w
         test!("==")(gradient_weights.data(), [(output.data[0] - label.data[0]) * input.data[0],
@@ -386,7 +383,6 @@ public class Executor (T)
         // test with different weights
         weights.data[] = [3, 4];
         executor.forward();
-        executor.outputs(outputs);
         executor.backward();
         // gradient w.r.t. to w
         test!("==")(gradient_weights.data(), [(output.data[0] - label.data[0]) * input.data[0],
