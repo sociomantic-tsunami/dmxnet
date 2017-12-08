@@ -400,22 +400,27 @@ public class Executor (T)
         As a result, after each forward pass, the results can be accessed via
         these `NDArray` instances.
 
-        Any pre-existing handles in the `NDArray` instances will be freed (for
-        this reason it is recommended to pass in only instances with `null`
-        handles). Each time this method is called the handles of the passed
-        instances are set.  When calling this method more than once with
-        different instances you end up with different `NDArray` instances with
-        different handles but referencing the same underlying elements.
+        The handles of the passed `NDArray` instances must be `null` (free the
+        handles explicitly if needed). This is to avoid the surprising behavior
+        of this method freeing the handles under the hood (because after
+        freeing the caller may have no `NDArray` instances able to access some
+        data).
+
+        Each time this method is called the handles of the passed instances are
+        set. When calling this method more than once with different instances
+        you end up with different `NDArray` instances with different handles
+        but referencing the same underlying elements.
 
         Params:
-            outputs = array of `NDArray` instances (must be exactly one per
-                      output calculated by the executor) whose handles will be
-                      updated such that the instances will refer to the
-                      executor's underlying output data
+            outputs = array of `NDArray` instances with `null` handles (must be
+                      exactly one per output calculated by the executor) whose
+                      handles will be updated such that the instances will
+                      refer to the executor's underlying output data
 
         Throws:
             `MXNetExecutorException` if `outputs.length` is not equal to the
             number of computed outputs, or if any element of `outputs` is null
+            or its handle is non-null
 
     ***************************************************************************/
 
@@ -440,6 +445,13 @@ public class Executor (T)
             {
                 throw mxnet_executor_exception.set(
                     "Output NDArray instance is null at index ").append(i);
+            }
+
+            if (outputs[i].handle !is null)
+            {
+                throw mxnet_executor_exception
+                    .set("Output NDArray instance handle is non-null at index ")
+                    .append(i);
             }
 
             outputs[i].handle = handle;
