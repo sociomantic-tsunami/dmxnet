@@ -344,27 +344,29 @@ public class NDArray (T)
         `[1, 2, 3,
           4, 5, 6]`.
 
-        Note that it is only safe to read/write this data once any pending
-        read/writes are completed. In a multi-threaded setup (i.e. when using
-        a threaded MXNet engine) calling `waitToRead` ensures all writes to
-        this slice have been finished. Similarly, when writing elements of the
-        slice calling `waitToWrite` ensures that all previous read/writes of
-        this slice have finished. `copyFrom` and `copyTo` perform these
-        synchronizations implicitly under the hood when copying from or to a
-        buffer.
+        This function calls `waitToRead` before returning the data slice. This
+        means all pending writes (when calling this method) have finished. But
+        note that it is not synchronized for later writes. Call `waitToRead` as
+        needed to synchronize. Alternatively, instead of using this method you
+        can perform a copy via `copyTo`.
+
+        Note that you cannot change elements of the data slice: use `copyFrom`
+        if you wish to write new values for the n-dimensional array data.
 
         Returns:
-            the data slice of this n-dimensional array
+            a read-only data slice of this n-dimensional array
 
     ***************************************************************************/
 
-    public T[] data ()
+    public Const!(T)[] data ()
     in
     {
         assert(this.mxnet_ndarray.exists());
     }
     body
     {
+        // all pending writes must have been finished
+        this.waitToRead();
         T* ptr;
         this.mxnet_ndarray.apply!(MXNDArrayGetData)(cast(void**) &ptr);
         return ptr[0 .. this.length];
