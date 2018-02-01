@@ -247,14 +247,14 @@ public class Executor (T)
         // initialize two dimensional input vector
         scope input = new NDArray!(float)(context, [1, 2]);
         scope (exit) input.freeHandle();
-        input.data[] = [1, 2];
+        input.copyFrom([1, 2]);
         // and label to 1
         scope label = new NDArray!(float)(context, [1], 1f);
         scope (exit) label.freeHandle();
         // and weights
         scope weights = new NDArray!(float)(context, [1, 2]);
         scope (exit) weights.freeHandle();
-        weights.data[] = [0, 0];
+        weights.copyFrom([0, 0]);
         auto inputs = [input, weights, label];
 
         // initialize gradient w.r.t. weights to zero
@@ -279,14 +279,14 @@ public class Executor (T)
                                     input.data[1] * weights.data[1]]);
 
         // test with different inputs
-        input.data[] = [3, 4];
-        label.data[] = [3];
+        input.copyFrom([3, 4]);
+        label.copyFrom([3]);
         executor.forward(ForwardPass.outputs);
         test!("==")(output.data(), [input.data[0] * weights.data[0] +
                                     input.data[1] * weights.data[1]]);
 
         // test with different weights
-        weights.data[] = [3, 4];
+        weights.copyFrom([3, 4]);
         executor.forward(ForwardPass.outputs);
         test!("==")(output.data(), [input.data[0] * weights.data[0] +
                                     input.data[1] * weights.data[1]]);
@@ -339,14 +339,14 @@ public class Executor (T)
         // initialize two dimensional input vector
         scope input = new NDArray!(float)(context, [1, 2]);
         scope (exit) input.freeHandle();
-        input.data[] = [1, 2];
+        input.copyFrom([1, 2]);
         // and label to 1
         scope label = new NDArray!(float)(context, [1], 1f);
         scope (exit) label.freeHandle();
         // and weights
         scope weights = new NDArray!(float)(context, [1, 2]);
         scope (exit) weights.freeHandle();
-        weights.data[] = [0, 0];
+        weights.copyFrom([0, 0]);
         auto inputs = [input, weights, label];
 
         // initialize gradient w.r.t. weights to zero
@@ -372,8 +372,8 @@ public class Executor (T)
                                               (output.data[0] - label.data[0]) * input.data[1]]);
 
         // test with different inputs
-        input.data[] = [3, 4];
-        label.data[] = [3];
+        input.copyFrom([3, 4]);
+        label.copyFrom([3]);
         executor.forward();
         executor.backward();
         // gradient w.r.t. to w
@@ -381,7 +381,7 @@ public class Executor (T)
                                               (output.data[0] - label.data[0]) * input.data[1]]);
 
         // test with different weights
-        weights.data[] = [3, 4];
+        weights.copyFrom([3, 4]);
         executor.forward();
         executor.backward();
         // gradient w.r.t. to w
@@ -465,7 +465,7 @@ public class Executor (T)
         auto context = cpuContext();
         scope input = new NDArray!(float)(context, [2]);
         scope (exit) input.freeHandle();
-        input.data[] = [1, 2];
+        input.copyFrom([1, 2]);
         auto gradients = [NDArray!(float).init];
         auto gradients_ops = [OpReq.null_op];
         scope executor = new Executor(context, model, [input], gradients, gradients_ops, []);

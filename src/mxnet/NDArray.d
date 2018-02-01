@@ -708,8 +708,7 @@ public class NDArray (T)
             scope (exit) a.freeHandle();
             scope b = new NDArray(cpuContext(), [2, 1]);
             scope (exit) b.freeHandle();
-            T[] b_data = [1, 2];
-            b.data[] = b_data;
+            b.copyFrom([1, 2]);
             a -= b;
             T[] a_data = [1, 1, 1,
                           0, 0, 0];
@@ -721,8 +720,7 @@ public class NDArray (T)
             scope (exit) a.freeHandle();
             scope b = new NDArray(cpuContext(), [1, 3]);
             scope (exit) b.freeHandle();
-            T[] b_data = [1, 2, 3];
-            b.data[] = b_data;
+            b.copyFrom([1, 2, 3]);
             a -= b;
             T[] a_data = [2, 1, 0,
                           2, 1, 0];

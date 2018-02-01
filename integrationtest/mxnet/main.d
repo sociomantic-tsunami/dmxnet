@@ -127,8 +127,8 @@ void main (istring[] args)
         assert(labels_batch.length == batch_size);
 
         // set batch and ...
-        matrix_x.data()[] = images_batch;
-        vector_y.data()[] = labels_batch;
+        matrix_x.copyFrom(images_batch);
+        vector_y.copyFrom(labels_batch);
 
         // make a forward and a backward pass
         executor.forward();
@@ -173,7 +173,7 @@ size_t[] predict (Symbol model, NDArray!(float) matrix_w,
 
     scope matrix_x = new NDArray!(float)(cpuContext(), [num_images, num_pixels]);
     scope (exit) matrix_x.freeHandle();
-    matrix_x.data()[] = images;
+    matrix_x.copyFrom(images);
     scope vector_y = new NDArray!(float)(cpuContext(), [num_images]);
     scope (exit) vector_y.freeHandle();
 
