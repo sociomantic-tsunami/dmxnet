@@ -23,7 +23,6 @@ env:
     global:
         # Make sure beaver is in the PATH
         - PATH="$(git config -f .gitmodules submodule.beaver.path)/bin:$PATH)"
-        - BEAVER_DOCKER_VARS="F"
     matrix:
         - DMD=dmd1 DIST=xenial F=production
         - DMD=dmd1 DIST=xenial F=devel
