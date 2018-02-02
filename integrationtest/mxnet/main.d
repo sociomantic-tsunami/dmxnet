@@ -199,7 +199,7 @@ size_t[] predict (Symbol model, NDArray!(float) matrix_w,
     scope (exit) output.freeHandle();
     auto outputs = [output];
     executor.outputs(outputs);
-    auto predictions_vector = to!(float[])(output.data());
+    auto predictions_vector = output.data();
 
     auto predictions = new size_t[num_images];
     for (uint i = 0; i < num_images; ++i)
