@@ -1,4 +1,4 @@
-## `NDarray` must have `null` handles when calling `Executor.outputs`
+### `NDarray` must have `null` handles when calling `Executor.outputs`
 
 `mxnet.Executor`
 
