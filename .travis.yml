@@ -23,11 +23,23 @@ env:
     global:
         # Make sure beaver is in the PATH
         - PATH="$(git config -f .gitmodules submodule.beaver.path)/bin:$PATH)"
+        - BEAVER_DOCKER_VARS="MXNET_ENGINE_TYPE"
     matrix:
-        - DMD=dmd1 DIST=xenial F=production
-        - DMD=dmd1 DIST=xenial F=devel
-        - DMD=dmd-transitional DIST=xenial F=production
-        - DMD=dmd-transitional DIST=xenial F=devel
+        - DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=NaiveEngine
+        - DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEngine
+        - DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
+
+        - DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=NaiveEngine
+        - DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEngine
+        - DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
+
+        - DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=NaiveEngine
+        - DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEngine
+        - DMD=dmd-transitional DIST=xenial F=production ThreadedEnginePerDevice
+
+        - DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=NaiveEngine
+        - DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEngine
+        - DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
 
 install:
     - beaver dlang install
