@@ -1,2 +1,7 @@
 library: true
 d2ready: true
+automatic-update-prs:
+    default: patch
+    override:
+        makd: minor
+        beaver: minor
