@@ -35,7 +35,7 @@ env:
 
         - DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=NaiveEngine
         - DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEngine
-        - DMD=dmd-transitional DIST=xenial F=production ThreadedEnginePerDevice
+        - DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
 
         - DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=NaiveEngine
         - DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEngine
