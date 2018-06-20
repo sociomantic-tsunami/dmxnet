@@ -24,25 +24,52 @@ env:
         # Make sure beaver is in the PATH
         - PATH="$(git config -f .gitmodules submodule.beaver.path)/bin:$PATH)"
         - BEAVER_DOCKER_VARS="MXNET_ENGINE_TYPE"
-    matrix:
-        - DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=NaiveEngine
-        - DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEngine
-        - DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
 
-        - DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=NaiveEngine
-        - DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEngine
-        - DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
+# Basic config is inherited from the global scope
+jobs:
+    templates:
+        - &test-matrix
+          stage: Test
+          # Don't build tags already converted to D2
+          if: NOT tag =~ \+d2$
+          install:
+              - beaver dlang install
+              - beaver run script/download-mnist
+          script: beaver dlang make
+    include:
+        # Test matrix
+        - <<: *test-matrix
+          env: DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=NaiveEngine
+        - <<: *test-matrix
+          env: DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEngine
+        - <<: *test-matrix
+          env: DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
 
-        - DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=NaiveEngine
-        - DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEngine
-        - DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
+        - <<: *test-matrix
+          env: DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=NaiveEngine
+        - <<: *test-matrix
+          env: DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEngine
+        - <<: *test-matrix
+          env: DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
 
-        - DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=NaiveEngine
-        - DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEngine
-        - DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
+        - <<: *test-matrix
+          env: DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=NaiveEngine
+        - <<: *test-matrix
+          env: DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEngine
+        - <<: *test-matrix
+          env: DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
 
-install:
-    - beaver dlang install
-    - beaver run script/download-mnist
+        - <<: *test-matrix
+          env: DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=NaiveEngine
+        - <<: *test-matrix
+          env: DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEngine
+        - <<: *test-matrix
+          env: DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
 
-script: beaver dlang make
+        # Additional stages
+
+        - stage: D2 Release
+          if: tag IS present AND NOT tag =~ \+d2$
+          env: DMD=dmd-transitional DIST=xenial F=devel
+          install: beaver dlang install
+          script: beaver dlang d2-release
