@@ -41,7 +41,7 @@ Submodules
 Dependency Version
 ========== =======
 makd       v2.1.x
-ocean      v3.5.x
+ocean      v4.2.x
 ========== =======
 
 ``beaver`` 0.2.x is used by the Travis CI setup, but this submodule can be
