@@ -29,6 +29,29 @@ version(UnitTest)
     import ocean.core.Test;
 }
 
+version (UnitTest)
+{
+    /***************************************************************************
+
+        Notifies the MXNet engine to shutdown after leaving `main` for
+        unittests
+
+        Shutting down the engine limits a race when interacting with MXNet
+        during process exit. The race happens when MXNet is cleaning up (on
+        process exit).
+
+        Note:
+           This only reduces the probability of the race but it does not seem
+           to eliminate them.
+
+    ***************************************************************************/
+
+    static ~this ()
+    {
+        notifyShutdown();
+    }
+}
+
 
 /*******************************************************************************
 
