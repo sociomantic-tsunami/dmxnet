@@ -119,3 +119,18 @@ unittest
     invoke!(mxNetSucceeds)(&answer);
     test!("==")(answer, 42);
 }
+
+
+/*******************************************************************************
+
+    Notifies MXNet to shutdown
+
+    By calling this function MXNet is notified to shut down its engine. When
+    the engine is shut down MXNet will not execute pending calculations.
+
+*******************************************************************************/
+
+public void notifyShutdown ()
+{
+    invoke!(MXNotifyShutdown)();
+}
