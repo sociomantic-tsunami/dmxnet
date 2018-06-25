@@ -1,18 +1,14 @@
 #!/bin/sh
 set -eux
 
-# Update essential packages
-apt-get update
-apt-get -y upgrade
-
-# Add sociomantic-tsunami APT repos
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 379CE192D401AB61
-echo '# sociomantic-tsunami repos' \
-    > /etc/apt/sources.list.d/sociomantic-tsunami.list
+# Add sociomantic-tsunami mxnet APT repo
 dist="$(lsb_release -cs)"
 echo "deb https://dl.bintray.com/sociomantic-tsunami/mxnet $dist release" \
-    >> /etc/apt/sources.list.d/sociomantic-tsunami.list
+    >> /etc/apt/sources.list.d/mxnet.list
+
+# Update already-installed packages
 apt-get update
+apt-get -y upgrade
 
 # Install dmxnet dependencies
 apt-get install -y \
