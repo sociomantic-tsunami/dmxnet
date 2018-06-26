@@ -36,25 +36,31 @@ import ocean.sys.Environment;
 import ocean.transition;
 
 
+// we use a nested function in this unittest example to ensure that
+// the code compiles without actually running it, to avoid the need
+// to really load the dataset
 ///
 unittest
 {
-    // load the MNIST training dataset
-    auto mnist_training = trainingSet(datasetPath([]));
-    auto images = mnist_training.images;
-    auto labels = mnist_training.labels;
+    void useMNIST ()
+    {
+        // load the MNIST training dataset
+        auto mnist_training = trainingSet(datasetPath([]));
+        auto images = mnist_training.images;
+        auto labels = mnist_training.labels;
 
-    // dimensions of an image
-    auto image_rows = 28;
-    auto image_cols = 28;
-    assert(labels.length == images.length / (image_rows * image_cols));
+        // dimensions of an image
+        auto image_rows = 28;
+        auto image_cols = 28;
+        assert(labels.length == images.length / (image_rows * image_cols));
 
-    // access the first image and its label
-    auto first_training_image = images[0 .. image_rows * image_cols];
-    auto first_training_label = labels[0];
+        // access the first image and its label
+        auto first_training_image = images[0 .. image_rows * image_cols];
+        auto first_training_label = labels[0];
 
-    // image is stored row wise with values between 0 (white) and 255 (black)
-    auto first_row = first_training_image[0 .. image_rows];
+        // image is stored row wise with values between 0 (white) and 255 (black)
+        auto first_row = first_training_image[0 .. image_rows];
+    }
 }
 
 
