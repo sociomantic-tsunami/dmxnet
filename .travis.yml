@@ -24,6 +24,7 @@ env:
         # Make sure beaver is in the PATH
         - PATH="$(git config -f .gitmodules submodule.beaver.path)/bin:$PATH)"
         - BEAVER_DOCKER_VARS="MXNET_ENGINE_TYPE"
+        - DIST=xenial
 
 # Basic config is inherited from the global scope
 jobs:
@@ -39,37 +40,37 @@ jobs:
     include:
         # Test matrix
         - <<: *test-matrix
-          env: DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=NaiveEngine
+          env: DMD=dmd1 F=devel MXNET_ENGINE_TYPE=NaiveEngine
         - <<: *test-matrix
-          env: DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEngine
+          env: DMD=dmd1 F=devel MXNET_ENGINE_TYPE=ThreadedEngine
         - <<: *test-matrix
-          env: DMD=dmd1 DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
+          env: DMD=dmd1 F=devel MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
 
         - <<: *test-matrix
-          env: DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=NaiveEngine
+          env: DMD=dmd1 F=production MXNET_ENGINE_TYPE=NaiveEngine
         - <<: *test-matrix
-          env: DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEngine
+          env: DMD=dmd1 F=production MXNET_ENGINE_TYPE=ThreadedEngine
         - <<: *test-matrix
-          env: DMD=dmd1 DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
+          env: DMD=dmd1 F=production MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
 
         - <<: *test-matrix
-          env: DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=NaiveEngine
+          env: DMD=dmd-transitional F=production MXNET_ENGINE_TYPE=NaiveEngine
         - <<: *test-matrix
-          env: DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEngine
+          env: DMD=dmd-transitional F=production MXNET_ENGINE_TYPE=ThreadedEngine
         - <<: *test-matrix
-          env: DMD=dmd-transitional DIST=xenial F=production MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
+          env: DMD=dmd-transitional F=production MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
 
         - <<: *test-matrix
-          env: DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=NaiveEngine
+          env: DMD=dmd-transitional F=devel MXNET_ENGINE_TYPE=NaiveEngine
         - <<: *test-matrix
-          env: DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEngine
+          env: DMD=dmd-transitional F=devel MXNET_ENGINE_TYPE=ThreadedEngine
         - <<: *test-matrix
-          env: DMD=dmd-transitional DIST=xenial F=devel MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
+          env: DMD=dmd-transitional F=devel MXNET_ENGINE_TYPE=ThreadedEnginePerDevice
 
         # Additional stages
 
         - stage: D2 Release
           if: tag IS present AND NOT tag =~ \+d2$
-          env: DMD=dmd-transitional DIST=xenial F=devel
+          env: DMD=dmd-transitional F=devel
           install: beaver dlang install
           script: beaver dlang d2-release
