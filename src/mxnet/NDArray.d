@@ -3,7 +3,7 @@
     Defines an n-dimensional array (based on MXNet) to perform computations
 
     Copyright:
-        Copyright (c) 2017 sociomantic labs GmbH.
+        Copyright (c) 2017 dunnhumby Germany GmbH.
 
     License:
         Boost Software License Version 1.0.  See accompanying LICENSE.txt for
