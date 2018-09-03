@@ -575,7 +575,7 @@ public class Activation : Symbol
     }
     body
     {
-        const istring[] activations = ["relu", "sigmoid", "softrelu", "tanh"];
+        static immutable istring[] activations = ["relu", "sigmoid", "softrelu", "tanh"];
 
         istring key = "act_type";
 
@@ -889,7 +889,7 @@ public class SoftmaxOutput : Symbol
     }
     body
     {
-        const istring[] softmax_normalizations = ["batch", "null", "valid"];
+        static immutable istring[] softmax_normalizations = ["batch", "null", "valid"];
 
         alias typeof(Config.tupleof) ConfigTuple;
 
@@ -1120,7 +1120,7 @@ public class Dot : Symbol
         c_keys[1] = keys[1].ptr;
 
         Immut!(char)*[2] c_values;
-        const istring[] true_and_false = ["false", "true"];
+        static immutable istring[] true_and_false = ["false", "true"];
         c_values[0] = true_and_false[transpose_x].ptr;
         c_values[1] = true_and_false[transpose_y].ptr;
 
