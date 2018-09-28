@@ -4,10 +4,6 @@ export ASSERT_ON_STOMPING_PREVENTION=1
 override DFLAGS += -w
 override LDFLAGS += -lmxnet
 
-ifeq ($(DVER),1)
-	override DFLAGS += -v2 -v2=-static-arr-params -v2=-volatile
-endif
-
 .PHONY: download-mnist
 download-mnist: $C/script/download-mnist
 	$(call exec,sh $(if $V,,-x) $^,$(MNIST_DATA_DIR),$^)

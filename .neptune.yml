@@ -1,5 +1,5 @@
 library: true
-d2ready: true
+d2ready: only
 automatic-update-prs:
     default: patch
     override:

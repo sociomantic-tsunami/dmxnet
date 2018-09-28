@@ -2,13 +2,12 @@ Description
 ===========
 
 ``dmxnet`` provides D bindings for the `MXNet <http://mxnet.io/>`_ deep learning
-library, together with a friendly D wrapper library to allow more idiomatic use
-within D libraries and applications.
+library, together with a friendly D2 wrapper library to allow more idiomatic use
+within libraries and applications.
 
 The currently implemented bindings and wrapper library cover only a small core
 collection of the full MXNet functionality: we are not aiming for comprehensive
 support for everything MXNet can do, only good support for the main essentials.
-The current D API is written in D1, with the possibility to auto-convert to D2.
 
 Further design constraints include:
 
@@ -43,27 +42,13 @@ Dependency Version
 ocean      v4.2.x
 ========== =======
 
-If you plan to use the provided ``Makefile`` (you will need it to convert code
-to D2 or to run integration tests), you will also need to check out submodules
-with ``git submodule update --init``.  This will fetch source code for `Makd
+If you plan to use the provided ``Makefile`` (e.g. to run integration tests),
+you will also need to check out submodules with ``git submodule update --init``.
+This will fetch source code for `Makd
 <https://github.com/sociomantic-tsunami/makd>`_ (used by the ``Makefile``)
 into ``submodules/makd``.  It will also check out the source code for ``ocean``
 and ``beaver``.  (The latter can be ignored as it is only used by the Travis CI
 setup.)
-
-Conversion to D2
-----------------
-
-By default all ``dmxnet`` development is done in D1, but using a subset that is
-almost D2 compatible, and can be auto-converted to D2 using `d1to2fix
-<https://github.com/sociomantic-tsunami/d1to2fix>`_.  If you are using ``Makd``
-there is a handy built-in target you can use::
-
-  make d2conv
-
-You will need to use the `dmd-transitional
-<https://github.com/sociomantic-tsunami/dmd-transitional>`_ compiler to build
-the converted D2 code.
 
 
 Versioning
