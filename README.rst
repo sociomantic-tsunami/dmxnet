@@ -14,8 +14,8 @@ Further design constraints include:
 
 * ``dmxnet`` is not cross-platform: we are only supporting Linux at present
 
-* ``dmxnet`` is not written to support multithreading D code, and has only
-  been tested with a single-threaded ``libmxnet``
+* ``dmxnet`` is not written to support multithreading D code, although it
+  should work with multithreaded MXNet engines
 
 
 Build/Use
@@ -27,8 +27,8 @@ Dependencies
 Packages
 ********
 
-``libmxnet`` (``-lmxnet``) v0.10.x is required to build, and can be installed
-from the package provided in our `deb repository
+``libmxnet`` (``-lmxnet``) v1.0.0 or greater is required to build, and can be
+installed from the package provided in our `deb repository
 <https://bintray.com/sociomantic-tsunami/mxnet/libmxnet>`_.
 
 ``zlib`` (``-lz``) is required in order to run integration tests, and can be
@@ -40,19 +40,16 @@ Submodules
 ========== =======
 Dependency Version
 ========== =======
-makd       v2.1.x
 ocean      v4.2.x
 ========== =======
-
-``beaver`` 0.2.x is used by the Travis CI setup, but this submodule can be
-ignored for general development or use of the library.
 
 If you plan to use the provided ``Makefile`` (you will need it to convert code
 to D2 or to run integration tests), you will also need to check out submodules
 with ``git submodule update --init``.  This will fetch source code for `Makd
 <https://github.com/sociomantic-tsunami/makd>`_ (used by the ``Makefile``)
 into ``submodules/makd``.  It will also check out the source code for ``ocean``
-and ``beaver``.
+and ``beaver``.  (The latter can be ignored as it is only used by the Travis CI
+setup.)
 
 Conversion to D2
 ----------------
