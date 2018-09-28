@@ -292,7 +292,7 @@ private struct ImageFileHeader
 
     public int numImages ()
     {
-        return ntohl((&this).num_images);
+        return ntohl(this.num_images);
     }
 
 
@@ -306,7 +306,7 @@ private struct ImageFileHeader
 
     public int numRows ()
     {
-        return ntohl((&this).num_rows);
+        return ntohl(this.num_rows);
     }
 
 
@@ -320,7 +320,7 @@ private struct ImageFileHeader
 
     public int numCols ()
     {
-        return ntohl((&this).num_cols);
+        return ntohl(this.num_cols);
     }
 }
 
@@ -402,7 +402,7 @@ private struct LabelFileHeader
 
     public int numLabels ()
     {
-        return ntohl((&this).num_labels);
+        return ntohl(this.num_labels);
     }
 }
 
