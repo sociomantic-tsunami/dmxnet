@@ -1,5 +1,3 @@
-INTEGRATIONTEST := integrationtest
-
 MXNET_ENGINE_TYPE ?= NaiveEngine
 export MXNET_ENGINE_TYPE
 
