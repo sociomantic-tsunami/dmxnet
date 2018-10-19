@@ -49,14 +49,14 @@ version(UnitTest)
 
 public mstring toNoLossString (in float x, mstring buf)
 {
-    const max_length = 1 + // optional minus sign
+    static immutable max_length = 1 + // optional minus sign
                        1 + // leading decimal digit
                        1 + // .
                        8 + // 8 decimal digits
                        1 + // e
                        1 + // sign
                        2;  // decimal exponent
-    const format_string = "{:e8}";
+    static immutable format_string = "{:e8}";
 
     enforce(buf.length >= max_length);
     return snformat(buf, format_string, x);

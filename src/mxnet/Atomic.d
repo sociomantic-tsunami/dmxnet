@@ -229,7 +229,7 @@ private struct AtomicSymbolInfo
 
     public cstring toString ()
     {
-        return format("{}", *this);
+        return format("{}", *(&this));
     }
 
 
@@ -244,10 +244,10 @@ private struct AtomicSymbolInfo
 
     ***************************************************************************/
 
-    public void toString (FormatterSink sink)
+    public void toString (scope FormatterSink sink)
     in
     {
-        assert(this.creator !is null);
+        assert((&this).creator !is null);
     }
     body
     {
@@ -263,7 +263,7 @@ private struct AtomicSymbolInfo
         Const!(char)* return_type;
 
         invoke!(MXSymbolGetAtomicSymbolInfo)
-               (this.creator, &name, &description,
+               ((&this).creator, &name, &description,
                 &num_args, &arg_names, &arg_type_infos, &arg_descriptions,
                 &key_var_num_args, &return_type);
 
@@ -329,7 +329,7 @@ private struct AtomicSymbolList
 
     public cstring toString ()
     {
-        return format("{}", *this);
+        return format("{}", *(&this));
     }
 
 
@@ -345,13 +345,13 @@ private struct AtomicSymbolList
 
     ***************************************************************************/
 
-    public void toString (FormatterSink sink)
+    public void toString (scope FormatterSink sink)
     {
         foreach (creator; atomicSymbolCreatorList())
         {
             assert(creator !is null);
 
-            if (this.detailed_info)
+            if ((&this).detailed_info)
             {
                 sformat(sink, "----\n");
                 sformat(sink, "{}", AtomicSymbolInfo(creator));

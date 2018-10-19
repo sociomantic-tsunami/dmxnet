@@ -285,7 +285,7 @@ public class MXNetHandle (HandleType, alias FreeHandleFunction)
 
     ***************************************************************************/
 
-    public bool exists () /* d1to2fix_inject: const */
+    public bool exists () const
     {
         return this.c_api_handle !is null;
     }

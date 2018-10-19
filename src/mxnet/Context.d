@@ -75,7 +75,7 @@ public struct Context
 
     public DeviceType type ()
     {
-        return this.type_;
+        return (&this).type_;
     }
 
     unittest
@@ -93,7 +93,7 @@ public struct Context
 
     public int id ()
     {
-        return this.id_;
+        return (&this).id_;
     }
 
     unittest
