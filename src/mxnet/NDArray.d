@@ -22,9 +22,9 @@ import mxnet.Util;
 
 import ocean.core.array.Search;
 import ocean.core.Tuple;
+import ocean.meta.types.Qualifiers;
 import ocean.util.Convert;
 import ocean.text.util.StringC;
-import ocean.transition;
 
 version (unittest)
 {

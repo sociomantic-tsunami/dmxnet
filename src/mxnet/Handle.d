@@ -18,8 +18,8 @@ import mxnet.Exception;
 import core.sys.posix.unistd;
 
 debug (MXNetHandle) import ocean.io.Stdout;
+import ocean.meta.types.Qualifiers;
 import ocean.text.convert.Formatter;
-import ocean.transition;
 
 version (unittest)
 {

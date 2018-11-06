@@ -21,8 +21,8 @@ module mxnet.API;
 import mxnet.c.c_api;
 import mxnet.Exception;
 
+import ocean.meta.types.Qualifiers;
 import ocean.text.util.StringC;
-import ocean.transition;
 
 version (unittest)
 {

@@ -26,7 +26,6 @@ import mxnet.NDArray;
 import mxnet.Symbol;
 
 import ocean.text.util.StringC;
-import ocean.transition;
 import ocean.util.Convert;
 
 version (unittest)

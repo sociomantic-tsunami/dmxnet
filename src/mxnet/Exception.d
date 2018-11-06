@@ -18,7 +18,6 @@ import mxnet.c.c_api;
 
 import ocean.core.Exception;
 import ocean.text.util.StringC;
-import ocean.transition;
 
 version (unittest)
 {

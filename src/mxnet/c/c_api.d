@@ -32,9 +32,6 @@
 module mxnet.c.c_api;
 
 
-import ocean.transition;
-
-
 /*!
  *  Copyright (c) 2015 by Contributors
  * \file c_api.h

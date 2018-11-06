@@ -13,8 +13,8 @@
 
 module mxnet.Util;
 
-import ocean.transition;
 import ocean.core.Enforce;
+import ocean.meta.types.Qualifiers;
 import ocean.text.convert.Formatter;
 
 version (unittest)

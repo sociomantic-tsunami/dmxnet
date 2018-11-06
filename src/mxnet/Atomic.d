@@ -34,9 +34,9 @@ module mxnet.Atomic;
 import mxnet.c.c_api;
 import mxnet.API;
 
+import ocean.meta.types.Qualifiers;
 import ocean.text.convert.Formatter;
 import ocean.text.util.StringC;
-import ocean.transition;
 
 version (unittest)
 {
