@@ -71,14 +71,14 @@ unittest
     test!("==")(toNoLossString(-1f, buf), "-1.00000000e+00");
 
     // special values
-    test!("==")(toNoLossString(min_normal!(float), buf), "1.17549435e-38");
+    test!("==")(toNoLossString(float.min_normal, buf), "1.17549435e-38");
     test!("==")(toNoLossString(float.infinity, buf), "inf");
     test!("==")(toNoLossString(-float.infinity, buf), "-inf");
     test!("==")(toNoLossString(float.nan, buf), "nan");
     test!("==")(toNoLossString(-float.nan, buf), "-nan");
 
     // conversion to string and backward with no loss of information
-    foreach (x; [0f, 1f, min_normal!(float), float.infinity])
+    foreach (x; [0f, 1f, float.min_normal, float.infinity])
     {
         float x_parsed = Float.parse(toNoLossString(x, buf));
         test!("==")(x_parsed, x);
