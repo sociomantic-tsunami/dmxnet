@@ -15,11 +15,7 @@ module mxnet.Handle;
 
 import mxnet.Exception;
 
-import core.sys.posix.unistd;
-
-debug (MXNetHandle) import ocean.io.Stdout;
 import ocean.meta.types.Qualifiers;
-import ocean.text.convert.Formatter;
 
 version (unittest)
 {
@@ -455,6 +451,8 @@ public class MXNetHandle (HandleType, alias FreeHandleFunction)
 
 private void debugReport (Args...) (cstring fmt, Args args)
 {
+    import core.sys.posix.unistd : write, STDERR_FILENO;
+    import ocean.text.convert.Formatter : sformat;
     sformat((cstring str) { write(STDERR_FILENO, str.ptr, str.length); },
             fmt, args);
 }
