@@ -251,16 +251,16 @@ private struct AtomicSymbolInfo
     }
     body
     {
-        Const!(char)* name;
-        Const!(char)* description;
+        const(char)* name;
+        const(char)* description;
 
         uint num_args;
-        Const!(char)** arg_names;
-        Const!(char)** arg_type_infos;
-        Const!(char)** arg_descriptions;
+        const(char)** arg_names;
+        const(char)** arg_type_infos;
+        const(char)** arg_descriptions;
 
-        Const!(char)* key_var_num_args;
-        Const!(char)* return_type;
+        const(char)* key_var_num_args;
+        const(char)* return_type;
 
         invoke!(MXSymbolGetAtomicSymbolInfo)
                (this.creator, &name, &description,

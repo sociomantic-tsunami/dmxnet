@@ -168,7 +168,7 @@ public class Symbol
 
     public cstring toStringDebug ()
     {
-        Const!(char*) str;
+        const(char*) str;
         this.mxnet_symbol.apply!(MXSymbolPrint)(&str);
         return StringC.toDString(str);
     }
@@ -231,10 +231,10 @@ public class Symbol
 
     ***************************************************************************/
 
-    public Const!(cstring[]) auxiliaryStates ()
+    public const(cstring[]) auxiliaryStates ()
     {
         mx_uint states_length;
-        Const!(char**) states_ptr;
+        const(char**) states_ptr;
         this.mxnet_symbol.apply!(MXSymbolListAuxiliaryStates)(&states_length, &states_ptr);
 
         this.auxiliary_state_names.length = states_length;
@@ -280,7 +280,7 @@ public class Symbol
     public cstring[] arguments ()
     {
         mx_uint arguments_length;
-        Const!(char**) arguments_ptr;
+        const(char**) arguments_ptr;
         this.mxnet_symbol.apply!(MXSymbolListArguments)
                                 (&arguments_length, &arguments_ptr);
 
@@ -340,7 +340,7 @@ public class Symbol
 
     ***************************************************************************/
 
-    private void compose (SymbolHandle[] inputs, Const!(char*)[] keys,
+    private void compose (SymbolHandle[] inputs, const(char*)[] keys,
                           istring file = __FILE__, int line = __LINE__)
     {
         foreach (i, input; inputs)
@@ -488,7 +488,7 @@ public class Variable : Symbol
 
     public cstring name ()
     {
-        Const!(char*) mxnet_symbol_name;
+        const(char*) mxnet_symbol_name;
         int failed_name;
         this.mxnet_symbol.apply!(MXSymbolGetName)
                                 (&mxnet_symbol_name, &failed_name);
@@ -668,7 +668,7 @@ public class FullyConnected : Symbol
         immutable(char)*[2] c_keys;
         foreach (i, ref key; keys) c_keys[i] = key.ptr;
 
-        Const!(char)*[2] c_values;
+        const(char)*[2] c_values;
         c_values[0] = num_hidden_str.ptr;
         c_values[1] = no_bias.ptr;
 
@@ -894,8 +894,8 @@ public class SoftmaxOutput : Symbol
         alias typeof(Config.tupleof) ConfigTuple;
 
         istring[ConfigTuple.length] keys;
-        Const!(char)*[ConfigTuple.length] c_keys;
-        Const!(char)*[ConfigTuple.length] c_values;
+        const(char)*[ConfigTuple.length] c_keys;
+        const(char)*[ConfigTuple.length] c_values;
 
         foreach (i, T; ConfigTuple)
         {
@@ -1022,7 +1022,7 @@ public class LinearRegressionOutput : Symbol
         immutable(char)*[1] c_keys;
         c_keys[0] = key.ptr;
 
-        Const!(char)*[1] c_values;
+        const(char)*[1] c_values;
         c_values[0] = value.ptr;
 
         super("LinearRegressionOutput", c_keys, c_values);

@@ -100,7 +100,7 @@ public class NDArray (T)
     ***************************************************************************/
 
     public this (Context context,
-                 Const!(uint)[] shape,
+                 const(uint)[] shape,
                  bool lazy_allocation = false)
     {
         NDArrayHandle ndarray_handle;
@@ -148,7 +148,7 @@ public class NDArray (T)
     ***************************************************************************/
 
     public this (Context context,
-                 Const!(uint)[] shape,
+                 const(uint)[] shape,
                  T value,
                  bool lazy_allocation = false)
     {
@@ -221,7 +221,7 @@ public class NDArray (T)
 
     ***************************************************************************/
 
-    public Const!(uint[]) shape ()
+    public const(uint[]) shape ()
     in
     {
         assert(this.mxnet_ndarray.exists());
@@ -229,7 +229,7 @@ public class NDArray (T)
     body
     {
         uint num_dims;
-        Const!(uint*) dims_ptr;
+        const(uint*) dims_ptr;
         this.mxnet_ndarray.apply!(MXNDArrayGetShape)(&num_dims, &dims_ptr);
         return dims_ptr[0 .. num_dims];
     }
@@ -358,7 +358,7 @@ public class NDArray (T)
 
     ***************************************************************************/
 
-    public Const!(T)[] data ()
+    public const(T)[] data ()
     in
     {
         assert(this.mxnet_ndarray.exists());
@@ -465,7 +465,7 @@ public class NDArray (T)
 
     ***************************************************************************/
 
-    public void copyFrom (Const!(T)[] src)
+    public void copyFrom (const(T)[] src)
     in
     {
         assert(this.mxnet_ndarray.exists());
@@ -625,7 +625,7 @@ public class NDArray (T)
 
         immutable(char)*[1] keys;
         keys[0] = key.ptr;
-        Const!(char)*[1] values;
+        const(char)*[1] values;
         values[0] = value.ptr;
 
         NDArrayHandle[] inputs = null;
@@ -1401,7 +1401,7 @@ body
 
     immutable(char)*[1] keys;
     keys[0] = key.ptr;
-    Const!(char)*[1] values;
+    const(char)*[1] values;
     values[0] = value.ptr;
 
     NDArrayHandle[1] inputs;

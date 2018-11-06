@@ -166,7 +166,7 @@ void main (istring[] args)
 *******************************************************************************/
 
 size_t[] predict (Symbol model, NDArray!(float) matrix_w,
-                  uint num_images, Const!(float)[] images)
+                  uint num_images, const(float)[] images)
 {
     assert(images.length % num_images == 0);
     uint num_pixels = to!(uint)(images.length) / num_images;
@@ -242,7 +242,7 @@ size_t[] predict (Symbol model, NDArray!(float) matrix_w,
 
 *******************************************************************************/
 
-double accuracy (Const!(size_t)[] predicted_labels, Const!(size_t)[] expected_labels)
+double accuracy (const(size_t)[] predicted_labels, const(size_t)[] expected_labels)
 {
     assert(expected_labels.length == predicted_labels.length);
 
