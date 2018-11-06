@@ -20,7 +20,7 @@ import ocean.core.Exception;
 import ocean.text.util.StringC;
 import ocean.transition;
 
-version(UnitTest)
+version (unittest)
 {
     import ocean.core.Test;
 }

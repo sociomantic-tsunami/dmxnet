@@ -26,7 +26,7 @@ import ocean.util.Convert;
 import ocean.text.util.StringC;
 import ocean.transition;
 
-version(UnitTest)
+version (unittest)
 {
     import ocean.core.Tuple;
     import ocean.core.Test;
@@ -1607,7 +1607,7 @@ unittest
 }
 
 
-version (UnitTest)
+version (unittest)
 {
     /***************************************************************************
 

@@ -24,7 +24,7 @@ import ocean.transition;
 import ocean.util.Convert;
 
 
-version (UnitTest) {} else
+version (unittest) {} else
 void main (istring[] args)
 {
     auto mnist_dataset_dir = MNIST.datasetPath(args);

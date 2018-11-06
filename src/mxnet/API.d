@@ -24,12 +24,12 @@ import mxnet.Exception;
 import ocean.text.util.StringC;
 import ocean.transition;
 
-version(UnitTest)
+version (unittest)
 {
     import ocean.core.Test;
 }
 
-version (UnitTest)
+version (unittest)
 {
     /***************************************************************************
 

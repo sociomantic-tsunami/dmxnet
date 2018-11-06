@@ -21,7 +21,7 @@ debug (MXNetHandle) import ocean.io.Stdout;
 import ocean.text.convert.Formatter;
 import ocean.transition;
 
-version (UnitTest)
+version (unittest)
 {
     import core.stdc.stdlib;
 
@@ -466,7 +466,7 @@ unittest
 }
 
 
-version (UnitTest)
+version (unittest)
 {
     /***************************************************************************
 

@@ -17,7 +17,7 @@ import ocean.transition;
 import ocean.core.Enforce;
 import ocean.text.convert.Formatter;
 
-version(UnitTest)
+version (unittest)
 {
     import ocean.core.Test;
     import Float = ocean.text.convert.Float;
