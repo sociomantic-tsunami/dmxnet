@@ -238,7 +238,7 @@ public class Symbol
         this.mxnet_symbol.apply!(MXSymbolListAuxiliaryStates)(&states_length, &states_ptr);
 
         this.auxiliary_state_names.length = states_length;
-        enableStomping(this.auxiliary_state_names);
+        assumeSafeAppend(this.auxiliary_state_names);
         foreach (i, str; states_ptr[0 .. states_length])
         {
             this.auxiliary_state_names[i] = StringC.toDString(str);
@@ -285,7 +285,7 @@ public class Symbol
                                 (&arguments_length, &arguments_ptr);
 
         this.argument_names.length = arguments_length;
-        enableStomping(this.argument_names);
+        assumeSafeAppend(this.argument_names);
         foreach (i, str; arguments_ptr[0 .. arguments_length])
         {
             this.argument_names[i] = StringC.toDString(str);
@@ -470,7 +470,7 @@ public class Variable : Symbol
         this.name_[0 .. $ - 1] = variable_name[];
         this.name_[$ - 1] = '\0';
         this.name_.length = this.name_.length - 1;
-        enableStomping(this.name_);
+        assumeSafeAppend(this.name_);
     }
 
 
