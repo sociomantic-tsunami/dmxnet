@@ -623,7 +623,7 @@ public class NDArray (T)
         auto value_len = toNoLossString(scalar, value).length;
         value[value_len] = '\0';
 
-        Immut!(char)*[1] keys;
+        immutable(char)*[1] keys;
         keys[0] = key.ptr;
         Const!(char)*[1] values;
         values[0] = value.ptr;
@@ -1399,7 +1399,7 @@ body
     auto value_len = toNoLossString(rhs, value).length;
     value[value_len] = '\0';
 
-    Immut!(char)*[1] keys;
+    immutable(char)*[1] keys;
     keys[0] = key.ptr;
     Const!(char)*[1] values;
     values[0] = value.ptr;

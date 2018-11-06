@@ -579,9 +579,9 @@ public class Activation : Symbol
 
         istring key = "act_type";
 
-        Immut!(char)*[1] keys;
+        immutable(char)*[1] keys;
         keys[0] = key.ptr;
-        Immut!(char)*[1] values;
+        immutable(char)*[1] values;
         values[0] = activations[activation].ptr;
 
         super("Activation", keys, values);
@@ -665,7 +665,7 @@ public class FullyConnected : Symbol
 
         istring no_bias = (biases is null) ? "true" : "false";
 
-        Immut!(char)*[2] c_keys;
+        immutable(char)*[2] c_keys;
         foreach (i, ref key; keys) c_keys[i] = key.ptr;
 
         Const!(char)*[2] c_values;
@@ -1019,7 +1019,7 @@ public class LinearRegressionOutput : Symbol
         auto value_len = toNoLossString(grad_scale, value).length;
         value[value_len] = '\0';
 
-        Immut!(char)*[1] c_keys;
+        immutable(char)*[1] c_keys;
         c_keys[0] = key.ptr;
 
         Const!(char)*[1] c_values;
@@ -1115,11 +1115,11 @@ public class Dot : Symbol
         keys[0] = "transpose_a";
         keys[1] = "transpose_b";
 
-        Immut!(char)*[2] c_keys;
+        immutable(char)*[2] c_keys;
         c_keys[0] = keys[0].ptr;
         c_keys[1] = keys[1].ptr;
 
-        Immut!(char)*[2] c_values;
+        immutable(char)*[2] c_values;
         static immutable istring[] true_and_false = ["false", "true"];
         c_values[0] = true_and_false[transpose_x].ptr;
         c_values[1] = true_and_false[transpose_y].ptr;
