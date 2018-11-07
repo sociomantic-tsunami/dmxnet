@@ -822,7 +822,7 @@ public alias Tuple!(float, double, int, ubyte) SupportedElementTypes;
 
 public template isSupportedElementType (T)
 {
-    static immutable bool isSupportedElementType =
+    enum bool isSupportedElementType =
         IndexOf!(T, SupportedElementTypes) < SupportedElementTypes.length;
 }
 

@@ -49,14 +49,14 @@ version (unittest)
 
 public mstring toNoLossString (in float x, mstring buf)
 {
-    static immutable max_length = 1 + // optional minus sign
-                       1 + // leading decimal digit
-                       1 + // .
-                       8 + // 8 decimal digits
-                       1 + // e
-                       1 + // sign
-                       2;  // decimal exponent
-    static immutable format_string = "{:e8}";
+    enum max_length = 1 + // optional minus sign
+                      1 + // leading decimal digit
+                      1 + // .
+                      8 + // 8 decimal digits
+                      1 + // e
+                      1 + // sign
+                      2;  // decimal exponent
+    enum format_string = "{:e8}";
 
     enforce(buf.length >= max_length);
     return snformat(buf, format_string, x);
