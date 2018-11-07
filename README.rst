@@ -39,7 +39,7 @@ Submodules
 ========== =======
 Dependency Version
 ========== =======
-ocean      v4.2.x
+ocean      v4.4.x
 ========== =======
 
 If you plan to use the provided ``Makefile`` (e.g. to run integration tests),
