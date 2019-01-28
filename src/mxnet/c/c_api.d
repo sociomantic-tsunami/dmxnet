@@ -913,7 +913,7 @@ int MXExecutorBindEX (SymbolHandle symbol_handle, int dev_type, int dev_id, mx_u
 /*!
  * \brief set a call back to notify the completion of operation
  */
-int MXExecutorSetMonitorCallback (ExecutorHandle handle, scope ExecutorMonitorCallback callback, void* callback_handle);
+int MXExecutorSetMonitorCallback (ExecutorHandle handle, ExecutorMonitorCallback callback, void* callback_handle);
 //--------------------------------------------
 // Part 5: IO Interface
 //--------------------------------------------
@@ -1256,7 +1256,7 @@ int MXRtcPush (RtcHandle handle, mx_uint num_input, mx_uint num_output, NDArrayH
 */
 int MXRtcFree (RtcHandle handle);
 
-int MXCustomOpRegister (const(char)* op_type, scope CustomOpPropCreator creator);
+int MXCustomOpRegister (const(char)* op_type, CustomOpPropCreator creator);
 
 // __cplusplus
 
