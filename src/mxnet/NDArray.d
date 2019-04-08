@@ -495,7 +495,7 @@ public class NDArray (T)
         The elements are copied in the order obtained by varying the last index
         the fastest. For matrices this coincides with row-major order.
 
-        This function calls waiToRead() implicitly before performing the copy.
+        This function calls waitToRead() implicitly before performing the copy.
 
         Params:
             dst = destination of copy; must be same length as this
