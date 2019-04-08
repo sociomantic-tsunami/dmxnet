@@ -144,7 +144,8 @@ void main (istring[] args)
     auto testing_accuracy = accuracy(predicted_testing_labels, mnist_testing_labels);
     // prediction on testing
     test!(">=")(testing_accuracy, 0.915);
-    Stdout.formatln("Percentage of correctly predicted digits on MNIST testing: {:f4}%", testing_accuracy);
+    Stdout.formatln("Percentage of correctly predicted digits on MNIST testing: {:f2}%",
+                    testing_accuracy * 100);
     Stdout.formatln("Calculated in {:f6} seconds", iteration_time_sec);
     Stdout.formatln("MXNet handles in use at finish: {}", handleCount());
 }
