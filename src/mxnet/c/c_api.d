@@ -54,42 +54,42 @@ extern (C):
 /*! \brief MXNET_DLL prefix for windows */
 
 /*! \brief manually define unsigned int */
-alias uint mx_uint;
+alias mx_uint = uint;
 /*! \brief manually define float */
-alias float mx_float;
+alias mx_float = float;
 // all the handles are simply void *
 // will be casted internally to specific pointers types
 // these typedefs are mainly used for readablity reasons
 /*! \brief handle to NDArray */
-alias void* NDArrayHandle;
+alias NDArrayHandle = void*;
 /*! \brief handle to a mxnet narray function that changes NDArray */
-alias const(void)* FunctionHandle;
+alias FunctionHandle = const(void)*;
 /*! \brief handle to a function that takes param and creates symbol */
-alias void* AtomicSymbolCreator;
+alias AtomicSymbolCreator = void*;
 /*! \brief handle to cached operator */
-alias void* CachedOpHandle;
+alias CachedOpHandle = void*;
 /*! \brief handle to a symbol that can be bind as operator */
-alias void* SymbolHandle;
+alias SymbolHandle = void*;
 /*! \brief handle to a AtomicSymbol */
-alias void* AtomicSymbolHandle;
+alias AtomicSymbolHandle = void*;
 /*! \brief handle to an Executor */
-alias void* ExecutorHandle;
+alias ExecutorHandle = void*;
 /*! \brief handle a dataiter creator */
-alias void* DataIterCreator;
+alias DataIterCreator = void*;
 /*! \brief handle to a DataIterator */
-alias void* DataIterHandle;
+alias DataIterHandle = void*;
 /*! \brief handle to KVStore */
-alias void* KVStoreHandle;
+alias KVStoreHandle = void*;
 /*! \brief handle to RecordIO */
-alias void* RecordIOHandle;
+alias RecordIOHandle = void*;
 /*! \brief handle to MXRtc*/
-alias void* RtcHandle;
+alias RtcHandle = void*;
 /*! \brief handle to rtc cuda module*/
-alias void* CudaModuleHandle;
+alias CudaModuleHandle = void*;
 /*! \brief handle to rtc cuda kernel*/
-alias void* CudaKernelHandle;
+alias CudaKernelHandle = void*;
 
-alias void function (const(char)*, NDArrayHandle, void*) ExecutorMonitorCallback;
+alias ExecutorMonitorCallback = void function (const(char)*, NDArrayHandle, void*);
 
 struct NativeOpInfo
 {
@@ -123,7 +123,7 @@ struct NDArrayOpInfo
     void* p_declare_backward_dependency;
 }
 
-alias int function () MXGenericCallback;
+alias MXGenericCallback = int function ();
 
 struct MXCallbackList
 {
@@ -154,29 +154,29 @@ enum CustomOpPropCallbacks
 /*size*/ /*ptrs*/ /*tags*/
 /*reqs*/ /*is_train*/
 /*state*/
-alias int function (int, void**, int*, const(int)*, const int, void*) CustomOpFBFunc;
+alias CustomOpFBFunc = int function (int, void**, int*, const(int)*, const int, void*);
 /*state*/
-alias int function (void*) CustomOpDelFunc;
+alias CustomOpDelFunc = int function (void*);
 /*args*/ /*state*/
-alias int function (char***, void*) CustomOpListFunc;
+alias CustomOpListFunc = int function (char***, void*);
 /*num_input*/ /*ndims*/
 /*shapes*/ /*state*/
-alias int function (int, int*, uint**, void*) CustomOpInferShapeFunc;
+alias CustomOpInferShapeFunc = int function (int, int*, uint**, void*);
 /*num_input*/ /*types*/ /*state*/
-alias int function (int, int*, void*) CustomOpInferTypeFunc;
+alias CustomOpInferTypeFunc = int function (int, int*, void*);
 /*out_grad*/ /*in_data*/
 /*out_data*/ /*num_deps*/
 /*rdeps*/ /*state*/
-alias int function (const(int)*, const(int)*, const(int)*, int*, int**, void*) CustomOpBwdDepFunc;
+alias CustomOpBwdDepFunc = int function (const(int)*, const(int)*, const(int)*, int*, int**, void*);
 /*ctx*/ /*num_inputs*/
 /*shapes*/ /*ndims*/
 /*dtypes*/ /*ret*/
 /*state*/
-alias int function (const(char)*, int, uint**, const(int)*, const(int)*, MXCallbackList*, void*) CustomOpCreateFunc;
+alias CustomOpCreateFunc = int function (const(char)*, int, uint**, const(int)*, const(int)*, MXCallbackList*, void*);
 /*op_type*/ /*num_kwargs*/
 /*keys*/ /*values*/
 /*ret*/
-alias int function (const(char)*, const int, const(char*)*, const(char*)*, MXCallbackList*) CustomOpPropCreator;
+alias CustomOpPropCreator = int function (const(char)*, const int, const(char*)*, const(char*)*, MXCallbackList*);
 
 enum CustomFunctionCallbacks
 {
@@ -187,9 +187,9 @@ enum CustomFunctionCallbacks
 /*num_ograds*/ /*num_igrads*/ /*ptrs*/
 /*reqs*/ /*is_train*/
 /*state*/
-alias int function (int, int, void**, const(int)*, const int, void*) CustomFunctionBwdFunc;
+alias CustomFunctionBwdFunc = int function (int, int, void**, const(int)*, const int, void*);
 /*state*/
-alias int function (void*) CustomFunctionDelFunc;
+alias CustomFunctionDelFunc = int function (void*);
 
 /*!
  * \brief return str message of the last error
@@ -1368,7 +1368,7 @@ int MXKVStorePullRowSparseEx (KVStoreHandle handle, mx_uint num, const(char*)* k
  * \param local the value stored on local on this key
  * \param handle The additional handle to the updater
  */
-alias void function (int key, NDArrayHandle recv, NDArrayHandle local, void* handle) MXKVStoreUpdater;
+alias MXKVStoreUpdater = void function (int key, NDArrayHandle recv, NDArrayHandle local, void* handle);
 /*!
  * \brief user-defined updater for the kvstore with string keys
  * It's this updater's responsibility to delete \a recv and \a local
@@ -1377,7 +1377,7 @@ alias void function (int key, NDArrayHandle recv, NDArrayHandle local, void* han
  * \param local the value stored on local on this key
  * \param handle The additional handle to the updater
  */
-alias void function (const(char)* key, NDArrayHandle recv, NDArrayHandle local, void* handle) MXKVStoreStrUpdater;
+alias MXKVStoreStrUpdater = void function (const(char)* key, NDArrayHandle recv, NDArrayHandle local, void* handle);
 /*!
  * \brief register a push updater
  * \param handle handle to the KVStore
@@ -1470,7 +1470,7 @@ int MXKVStoreSetBarrierBeforeExit (KVStoreHandle handle, const int barrier_befor
  * \param body the body of the command
  * \param controller_handle helper handle for implementing controller
  */
-alias void function (int head, const(char)* body_, void* controller_handle) MXKVStoreServerController;
+alias MXKVStoreServerController = void function (int head, const(char)* body_, void* controller_handle);
 
 /**
  * \return Run as server (or scheduler)
