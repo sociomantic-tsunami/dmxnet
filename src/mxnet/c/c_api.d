@@ -1626,7 +1626,7 @@ int MXRtcCudaModuleFree (CudaModuleHandle handle);
  * \param name name of kernel function
  * \param num_args number of arguments
  * \param is_ndarray whether argument is ndarray
- * \param is_const(whether) argument is constant
+ * \param is_const whether argument is constant
  * \param arg_types data type of arguments
  * \param out created kernel
  */
