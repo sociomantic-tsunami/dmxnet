@@ -154,7 +154,7 @@ enum CustomOpPropCallbacks
 /*size*/ /*ptrs*/ /*tags*/
 /*reqs*/ /*is_train*/
 /*state*/
-alias int function (int, void**, int*, const(int)*, const(int), void*) CustomOpFBFunc;
+alias int function (int, void**, int*, const(int)*, const int, void*) CustomOpFBFunc;
 /*state*/
 alias int function (void*) CustomOpDelFunc;
 /*args*/ /*state*/
@@ -176,7 +176,7 @@ alias int function (const(char)*, int, uint**, const(int)*, const(int)*, MXCallb
 /*op_type*/ /*num_kwargs*/
 /*keys*/ /*values*/
 /*ret*/
-alias int function (const(char)*, const(int), const(char*)*, const(char*)*, MXCallbackList*) CustomOpPropCreator;
+alias int function (const(char)*, const int, const(char*)*, const(char*)*, MXCallbackList*) CustomOpPropCreator;
 
 enum CustomFunctionCallbacks
 {
@@ -187,7 +187,7 @@ enum CustomFunctionCallbacks
 /*num_ograds*/ /*num_igrads*/ /*ptrs*/
 /*reqs*/ /*is_train*/
 /*state*/
-alias int function (int, int, void**, const(int)*, const(int), void*) CustomFunctionBwdFunc;
+alias int function (int, int, void**, const(int)*, const int, void*) CustomFunctionBwdFunc;
 /*state*/
 alias int function (void*) CustomFunctionDelFunc;
 
@@ -380,14 +380,14 @@ int MXNDArraySyncCopyToCPU (NDArrayHandle handle, void* data, size_t size);
  * \param handle_src handle of a src ndarray which has default storage type
  * \param i dst data blob indicator
  */
-int MXNDArraySyncCopyFromNDArray (NDArrayHandle handle_dst, const(NDArrayHandle) handle_src, const(int) i);
+int MXNDArraySyncCopyFromNDArray (NDArrayHandle handle_dst, const NDArrayHandle handle_src, const int i);
 
 /*!
  * \brief check whether the NDArray format is valid
  * \param full_check if `True`, rigorous check, O(N) operations
  *    Otherwise basic check, O(1) operations
  */
-int MXNDArraySyncCheckFormat (NDArrayHandle handle, const(bool) full_check);
+int MXNDArraySyncCheckFormat (NDArrayHandle handle, const bool full_check);
 /*!
  * \brief Wait until all the pending writes with respect NDArray are finished.
  *  Always call this before read data out synchronizely.
@@ -1150,7 +1150,7 @@ int MXExecutorBindX (SymbolHandle symbol_handle, int dev_type, int dev_id, mx_ui
  */
 int MXExecutorBindEX (SymbolHandle symbol_handle, int dev_type, int dev_id, mx_uint num_map_keys, const(char*)* map_keys, const(int)* map_dev_types, const(int)* map_dev_ids, mx_uint len, NDArrayHandle* in_args, NDArrayHandle* arg_grad_store, mx_uint* grad_req_type, mx_uint aux_states_len, NDArrayHandle* aux_states, ExecutorHandle shared_exec, ExecutorHandle* out_);
 
-int MXExecutorSimpleBind (SymbolHandle symbol_handle, int dev_type, int dev_id, const(mx_uint) num_g2c_keys, const(char*)* g2c_keys, const(int)* g2c_dev_types, const(int)* g2c_dev_ids, const(mx_uint) provided_grad_req_list_len, const(char*)* provided_grad_req_names, const(char*)* provided_grad_req_types, const(mx_uint) num_provided_arg_shapes, const(char*)* provided_arg_shape_names, const(mx_uint)* provided_arg_shape_data, const(mx_uint)* provided_arg_shape_idx, const(mx_uint) num_provided_arg_dtypes, const(char*)* provided_arg_dtype_names, const(int)* provided_arg_dtypes, const(mx_uint) num_provided_arg_stypes, const(char*)* provided_arg_stype_names, const(int)* provided_arg_stypes, const(mx_uint) num_shared_arg_names, const(char*)* shared_arg_name_list, int* shared_buffer_len, const(char*)* shared_buffer_name_list, NDArrayHandle* shared_buffer_handle_list, const(char**)* updated_shared_buffer_name_list, NDArrayHandle** updated_shared_buffer_handle_list, mx_uint* num_in_args, NDArrayHandle** in_args, NDArrayHandle** arg_grads, mx_uint* num_aux_states, NDArrayHandle** aux_states, ExecutorHandle shared_exec_handle, ExecutorHandle* out_);
+int MXExecutorSimpleBind (SymbolHandle symbol_handle, int dev_type, int dev_id, const mx_uint num_g2c_keys, const(char*)* g2c_keys, const(int)* g2c_dev_types, const(int)* g2c_dev_ids, const mx_uint provided_grad_req_list_len, const(char*)* provided_grad_req_names, const(char*)* provided_grad_req_types, const mx_uint num_provided_arg_shapes, const(char*)* provided_arg_shape_names, const(mx_uint)* provided_arg_shape_data, const(mx_uint)* provided_arg_shape_idx, const mx_uint num_provided_arg_dtypes, const(char*)* provided_arg_dtype_names, const(int)* provided_arg_dtypes, const mx_uint num_provided_arg_stypes, const(char*)* provided_arg_stype_names, const(int)* provided_arg_stypes, const mx_uint num_shared_arg_names, const(char*)* shared_arg_name_list, int* shared_buffer_len, const(char*)* shared_buffer_name_list, NDArrayHandle* shared_buffer_handle_list, const(char**)* updated_shared_buffer_name_list, NDArrayHandle** updated_shared_buffer_handle_list, mx_uint* num_in_args, NDArrayHandle** in_args, NDArrayHandle** arg_grads, mx_uint* num_aux_states, NDArrayHandle** aux_states, ExecutorHandle shared_exec_handle, ExecutorHandle* out_);
 /*!
  * \brief set a call back to notify the completion of operation
  */
@@ -1462,7 +1462,7 @@ int MXKVStoreBarrier (KVStoreHandle handle);
  * \param barrier_before_exit whether to do barrier when kvstore finalize
  * \return 0 when success, -1 when failure happens
  */
-int MXKVStoreSetBarrierBeforeExit (KVStoreHandle handle, const(int) barrier_before_exit);
+int MXKVStoreSetBarrierBeforeExit (KVStoreHandle handle, const int barrier_before_exit);
 
 /**
  * \brief the prototype of a server controller
@@ -1502,7 +1502,7 @@ int MXKVStoreSendCommmandToServers (KVStoreHandle handle, int cmd_id, const(char
  * \param timeout_sec A node fails to send heartbeart in {timeout_sec} seconds
  *                    will be presumed as 'dead'
  */
-int MXKVStoreGetNumDeadNode (KVStoreHandle handle, const(int) node_id, int* number, const(int) timeout_sec);
+int MXKVStoreGetNumDeadNode (KVStoreHandle handle, const int node_id, int* number, const int timeout_sec);
 
 /**
  * \brief Create a RecordIO writer object
