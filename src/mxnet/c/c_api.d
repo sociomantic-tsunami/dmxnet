@@ -9,6 +9,11 @@
     This module was generated from mxnet/c_api.h version 1.1.0
     (<https://github.com/dmlc/mxnet/blob/1.1.0/include/mxnet/c_api.h>).
 
+    The bindings were generated using dstep v0.2.3 with the command line
+    argument `--single-line-function-signatures=true` and
+    `--package="mxnet.c"`. Manual changes were done to add this module
+    documentation (including moving the license information).
+
     When using this module you need to link against the `libmxnet` library.
 
     Copyright:
