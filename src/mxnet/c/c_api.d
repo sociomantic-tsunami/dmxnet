@@ -34,13 +34,6 @@
 
 module mxnet.c.c_api;
 
-
-/*!
- *  Copyright (c) 2015 by Contributors
- * \file c_api.h
- * \brief C API of mxnet
- */
-
 extern (C):
 
 /*! \brief Inhibit C++ name-mangling for MXNet functions. */
